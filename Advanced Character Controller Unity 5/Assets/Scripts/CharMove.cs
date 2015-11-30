@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharMove : MonoBehaviour
-{
+public class CharMove : MonoBehaviour {
 
     float moveSpeedMultiplier = 1;
     float stationaryTurnSpeed = 180; 
@@ -16,11 +15,17 @@ public class CharMove : MonoBehaviour
     float turnAmount; 
     float forwardAmount; 
     Vector3 velocity;
+
     float jumpPower = 10;
    
     IComparer rayHitComparer;
+
+	float autoTurnThreshold = 10;
+	float autoTurnSpeed = 20;
+	bool aim;
+	Vector3 currentLookPos;
+
     Rigidbody rigidBody;
-   
 
     void Start()
     {
@@ -56,20 +61,24 @@ public class CharMove : MonoBehaviour
         }
     }
 
-    public void Move(Vector3 move)
-    {    
+    public void Move(Vector3 move, bool aim, Vector3 lookPos) {
+
         if (move.magnitude > 1)
             move.Normalize();
        
         this.moveInput = move; 
+		this.aim = aim;
+		this.currentLookPos = lookPos;
 
         velocity = GetComponent<Rigidbody>().velocity; 
 
         ConvertMoveInput();
+
+		TurnTowardsCameraForward ();
+
         ApplyExtraTurnRotation();
         GroundCheck ();
         UpdateAnimator();
-
     }
 
     void ConvertMoveInput()
@@ -123,10 +132,25 @@ public class CharMove : MonoBehaviour
         }
     }
 
-    class RayHitComparer : IComparer
-    {
-        public int Compare(object x, object y)
-        {
+	void TurnTowardsCameraForward() {
+	
+		if (Mathf.Abs (forwardAmount) < .01f) {
+		
+			Vector3 lookDelta = transform.InverseTransformDirection(currentLookPos - transform.position);
+
+			float lookAngle = Mathf.Atan2 (lookDelta.x, lookDelta.z) * Mathf.Rad2Deg;
+
+			if(Mathf.Abs (lookAngle) > autoTurnThreshold) {
+			
+				turnAmount += lookAngle * autoTurnSpeed * .001f;
+			}
+		}
+	}
+
+    class RayHitComparer : IComparer {
+
+        public int Compare(object x, object y) {
+
             return ((RaycastHit)x).distance.CompareTo(((RaycastHit)y).distance);
         }
     }

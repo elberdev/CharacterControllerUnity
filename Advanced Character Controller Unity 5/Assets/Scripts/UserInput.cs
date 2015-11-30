@@ -2,8 +2,7 @@
 using System.Collections;
 
 
-public class UserInput : MonoBehaviour
-{
+public class UserInput : MonoBehaviour {
 
     public bool walkByDefault = false;
 
@@ -12,8 +11,14 @@ public class UserInput : MonoBehaviour
     private Vector3 camForward;
     private Vector3 move;
 
-    void Start()
-    {
+	public bool aim;
+	public float aimingWeight;
+
+	public bool lookInCameraDirection;
+	Vector3 lookPos;
+
+    void Start() {
+
         if (Camera.main != null)
         {
             cam = Camera.main.transform;
@@ -69,8 +74,10 @@ public class UserInput : MonoBehaviour
             }
         }
 
+		lookPos = lookInCameraDirection && cam != null ? transform.position + cam.forward * 100 : transform.position + transform.forward * 100;
+
         move *= walkMultiplier;
-        character.Move(move);
+        character.Move(move, aim, lookPos);
     }
 
 }
