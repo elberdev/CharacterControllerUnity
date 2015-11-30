@@ -74,9 +74,12 @@ public class CharMove : MonoBehaviour {
 
         ConvertMoveInput();
 
-		TurnTowardsCameraForward ();
+		if (!aim) {
 
-        ApplyExtraTurnRotation();
+			TurnTowardsCameraForward ();
+			ApplyExtraTurnRotation();
+		}
+
         GroundCheck ();
         UpdateAnimator();
     }
@@ -98,9 +101,11 @@ public class CharMove : MonoBehaviour {
 
     void UpdateAnimator()
     { 
-       animator.applyRootMotion = true;
-       animator.SetFloat("Forward", forwardAmount, 0.1f, Time.deltaTime);
-       animator.SetFloat("Turn", turnAmount, 0.1f, Time.deltaTime);
+       	animator.applyRootMotion = true;
+       	animator.SetFloat("Forward", forwardAmount, 0.1f, Time.deltaTime);
+       	animator.SetFloat("Turn", turnAmount, 0.1f, Time.deltaTime);
+
+		//animator.SetBool ("Aim", aim);
     }
    
     void GroundCheck()

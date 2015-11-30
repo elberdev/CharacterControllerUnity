@@ -33,16 +33,27 @@ public class UserInput : MonoBehaviour {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
+		if (!aim) {
 
-        if (cam != null)
-        {
-            camForward = Vector3.Scale(cam.forward, new Vector3(1, 0, 1)).normalized;
-            move = vertical * camForward + horizontal * cam.right;
-        }
-        else
-        {
-            move = vertical * Vector3.forward + horizontal * Vector3.right;
-        }
+			if (cam != null) {
+
+				camForward = Vector3.Scale (cam.forward, new Vector3 (1, 0, 1)).normalized;
+				move = vertical * camForward + horizontal * cam.right;
+
+			} else {
+
+				move = vertical * Vector3.forward + horizontal * Vector3.right;
+			}
+
+		} else {
+
+			move = Vector3.zero;
+
+			Vector3 dir = lookPos - transform.position;
+			dir.y = 0;
+
+			transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (dir), 20 * Time.deltaTime);
+		}
 
         if (move.magnitude > 1)
             move.Normalize();
