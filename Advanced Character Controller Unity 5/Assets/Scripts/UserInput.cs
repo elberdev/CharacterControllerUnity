@@ -19,6 +19,8 @@ public class UserInput : MonoBehaviour {
 
 	Animator anim;
 
+	public ParticleSystem partSyst;
+
 	//IK stuff. These values will need to be changed for different rigs...
 	public Transform spine;
 	public float aimingZ = 213.46f;
@@ -37,14 +39,32 @@ public class UserInput : MonoBehaviour {
 		anim = GetComponent<Animator>();
     }
 
-	// This is where we handle the aiming on right-click
 	// Because the right click (mouse button 1) does not work on the mac simulator, 
 	// I changed it to regular click. The original is commented out.
-	void LateUpdate() {
+	void Update() {
 	
 		aim = Input.GetMouseButton (0);
 		//aim = Input.GetMouseButton (1);
 
+		if (aim) {
+
+			if (Input.GetKeyDown(KeyCode.LeftShift)) {
+			
+				anim.SetTrigger ("Fire");
+				partSyst.Emit(1);
+			}
+		
+//			if (Input.GetMouseButton(0) {
+//			
+//				anim.SetTrigger("Fire");
+//				partSyst.Emit(1);
+//			}
+		}
+	}
+
+	// This is where we handle the aiming on right-click
+	void LateUpdate() {
+	
 		aimingWeight = Mathf.MoveTowards (aimingWeight, (aim) ? 1.0f : 0.0f, Time.deltaTime * 5);
 
 		Vector3 normalState = new Vector3 (0, 0, -2f);
