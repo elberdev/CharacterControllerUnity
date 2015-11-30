@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Sample Assets\AIcharacter.cs">
+    <Files>
+      <File FileName="Assets\Sample Assets\CharacterMovement.cs" Line="64" Column="1" />
+      <File FileName="Assets\Sample Assets\UserInput.cs" Line="69" Column="1" />
+      <File FileName="Assets\Sample Assets\AIcharacter.cs" Line="37" Column="32" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
