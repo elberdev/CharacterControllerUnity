@@ -17,6 +17,8 @@ public class UserInput : MonoBehaviour {
 	public bool lookInCameraDirection;
 	Vector3 lookPos;
 
+	Animator anim;
+
     void Start() {
 
         if (Camera.main != null)
@@ -25,6 +27,7 @@ public class UserInput : MonoBehaviour {
         }
 
         character = GetComponent<CharMove>();
+		anim = GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -53,6 +56,9 @@ public class UserInput : MonoBehaviour {
 			dir.y = 0;
 
 			transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (dir), 20 * Time.deltaTime);
+
+			anim.SetFloat ("Forward", vertical);
+			anim.SetFloat ("Turn", horizontal);
 		}
 
         if (move.magnitude > 1)

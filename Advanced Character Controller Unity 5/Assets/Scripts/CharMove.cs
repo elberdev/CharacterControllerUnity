@@ -105,7 +105,7 @@ public class CharMove : MonoBehaviour {
        	animator.SetFloat("Forward", forwardAmount, 0.1f, Time.deltaTime);
        	animator.SetFloat("Turn", turnAmount, 0.1f, Time.deltaTime);
 
-		//animator.SetBool ("Aim", aim);
+		animator.SetBool ("Aim", aim);
     }
    
     void GroundCheck()
