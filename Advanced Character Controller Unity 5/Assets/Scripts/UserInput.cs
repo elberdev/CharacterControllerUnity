@@ -19,6 +19,13 @@ public class UserInput : MonoBehaviour {
 
 	Animator anim;
 
+	//IK stuff. These values will need to be changed for different rigs...
+	public Transform spine;
+	public float aimingZ = 213.46f;
+	public float aimimgX = -65.93f;
+	public float aimingY = 20.1f;
+	public float point = 30;
+
     void Start() {
 
         if (Camera.main != null)
@@ -29,6 +36,21 @@ public class UserInput : MonoBehaviour {
         character = GetComponent<CharMove>();
 		anim = GetComponent<Animator>();
     }
+
+	// This is where we handle the aiming on right-click
+	void LateUpdate() {
+	
+		aim = Input.GetMouseButton (1);
+
+		aimingWeight = Mathf.MoveTowards (aimingWeight, (aim) ? 1.0f : 0.0f, Time.deltaTime * 5);
+
+		Vector3 normalState = new Vector3 (0, 0, -2f);
+		Vector3 aimingState = new Vector3 (0, 0, -0.5f);
+
+		Vector3 pos = Vector3.Lerp (normalState, aimingState, aimingWeight);
+
+		cam.transform.localPosition = pos;
+	}
 
     void FixedUpdate()
     {
