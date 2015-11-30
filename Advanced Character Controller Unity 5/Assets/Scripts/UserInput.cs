@@ -22,7 +22,7 @@ public class UserInput : MonoBehaviour {
 	//IK stuff. These values will need to be changed for different rigs...
 	public Transform spine;
 	public float aimingZ = 213.46f;
-	public float aimimgX = -65.93f;
+	public float aimingX = -65.93f;
 	public float aimingY = 20.1f;
 	public float point = 30;
 
@@ -38,9 +38,12 @@ public class UserInput : MonoBehaviour {
     }
 
 	// This is where we handle the aiming on right-click
+	// Because the right click (mouse button 1) does not work on the mac simulator, 
+	// I changed it to regular click. The original is commented out.
 	void LateUpdate() {
 	
-		aim = Input.GetMouseButton (1);
+		aim = Input.GetMouseButton (0);
+		//aim = Input.GetMouseButton (1);
 
 		aimingWeight = Mathf.MoveTowards (aimingWeight, (aim) ? 1.0f : 0.0f, Time.deltaTime * 5);
 
@@ -50,6 +53,21 @@ public class UserInput : MonoBehaviour {
 		Vector3 pos = Vector3.Lerp (normalState, aimingState, aimingWeight);
 
 		cam.transform.localPosition = pos;
+
+		// if aiming, make character look and orient itself to the correct position
+		if (aim) {
+		
+			Vector3 eulerAngleOffset = Vector3.zero;
+
+			eulerAngleOffset = new Vector3(aimingX, aimingY, aimingZ);
+
+			Ray ray = new Ray(cam.position, cam.forward);
+
+			Vector3 lookPosition = ray.GetPoint(point);
+
+			spine.LookAt(lookPosition);
+			spine.Rotate (eulerAngleOffset, Space.Self);
+		}
 	}
 
     void FixedUpdate()
